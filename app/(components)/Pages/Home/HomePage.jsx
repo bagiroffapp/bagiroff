@@ -83,6 +83,7 @@ const HomePage = ({
           form_send_message_btn={form_send_message_btn}
           form_sending={form_sending}
         />
+        {/* 
         <Consulting
           consulting_head_text={consulting_head_text}
           consulting_alt_text={consulting_alt_text}
@@ -100,6 +101,7 @@ const HomePage = ({
           process_label4={process_label4}
           data_cards={false}
         />
+         */}
         <Partners
           partners={partners_data}
           partner_text1={partner_text1}
