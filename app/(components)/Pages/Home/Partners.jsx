@@ -11,7 +11,7 @@ import { Autoplay } from "swiper/modules";
 
 const Partners = ({ partners, partner_text1, partner_text2 }) => {
   return (
-    <Section sectionClass="mb-[80px]">
+    <Section sectionClass="mb-[80px] mt-[40px]">
       <MaxWidth>
         <Texts text1={partner_text1} text2={partner_text2} gap="gap-[20px]" />
         <Swiper
