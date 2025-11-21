@@ -3,7 +3,7 @@ const nextConfig = {
     images: {
         remotePatterns: [{
             protocol: 'https',
-            hostname: 'api.baghiroff.az',
+            hostname: 'admin.baghiroff.az',
             port: '',
             pathname: '/storage/**',
         }, ],
