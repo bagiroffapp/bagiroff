@@ -12,7 +12,7 @@ const Slider = ({ data }) => {
         {data?.map((cur, i) => (
           <SwiperSlide key={cur?.id || i}>
             <div className="relative">
-              <Image
+              <img
                 width={1000}
                 height={720}
                 className="object-cover w-full h-[720px] xl:h-[450px] md:h-[350px]"
