@@ -1,4 +1,8 @@
-import { getAPIData, getTrData } from "@/app/(components)/getData/getAPIData";
+import {
+  getAPIData,
+  getAPIData2,
+  getTrData,
+} from "@/app/(components)/getData/getAPIData";
 import Footer from "@/app/(components)/Layout/Footer";
 import Header from "@/app/(components)/Layout/Header";
 import HomePage from "@/app/(components)/Pages/Home/HomePage";
@@ -6,9 +10,10 @@ import HomePage from "@/app/(components)/Pages/Home/HomePage";
 const getData = async (params) => {
   const main = await getAPIData(params?.code, "main_page");
   const settings = await getAPIData(params?.code, "settings");
+  const home_sections = await getAPIData2("home_sections");
   const menu = await getAPIData(params?.code, "menu");
   const trans = await getTrData(params?.code);
-  return { main, trans, settings, menu };
+  return { main, trans, settings, menu, home_sections };
 };
 
 export async function generateMetadata({ params }) {
@@ -57,12 +62,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const { main, trans, settings, menu } = await getData(params);
+  const { main, trans, settings, menu, home_sections } = await getData(params);
   return (
     <>
       <Header params={params?.code} menu={menu?.menus} netice={trans?.netice} />
 
       <HomePage
+        home_sections={home_sections}
         slider_data={main?.slider}
         readMore={trans?.more}
         params={params?.code}
