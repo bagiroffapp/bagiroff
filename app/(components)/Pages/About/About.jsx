@@ -67,7 +67,7 @@ const About = ({
           <Image
             width={10000}
             height={500}
-            className="w-full h-[500px] object-cover mt-[80px] 2xl:mt-[40px] lg:mt-[20px]"
+            className="w-full h-[500px] object-cover md:object-contain md:h-auto mt-[80px] 2xl:mt-[40px] lg:mt-[20px]"
             alt={text1}
             src={`${picture}`}
           />
