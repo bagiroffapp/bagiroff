@@ -7,20 +7,18 @@ import {
   stripHTML,
 } from "@/app/(components)/Shared/toSlug";
 
-const getData = async (params) => {
-  const main = await getAPIData(
-    params?.code,
-    `xidmet/${params?.id}/${params?.slug}`
-  );
-  const dataFull = await getAPIData(params?.code, "xidmetler_page");
-  const settings = await getAPIData(params?.code, "settings");
-  const trans = await getTrData(params?.code);
-  const menu1 = await getAPIData(params?.code, "menu");
+const getData = async (code, id, slug) => {
+  const main = await getAPIData(code, `xidmet/${id}/${slug}`);
+  const dataFull = await getAPIData(code, "xidmetler_page");
+  const settings = await getAPIData(code, "settings");
+  const trans = await getTrData(code);
+  const menu1 = await getAPIData(code, "menu");
   return { main, trans, settings, dataFull, menu1 };
 };
 
 export async function generateMetadata({ params }) {
   try {
+    const { code, id, slug } = await params;
     const { settings, main } = await getData(params);
     const baseUrl = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
     const pictureBaseUrl = process.env.NEXT_PUBLIC_PICTURE;
@@ -41,7 +39,7 @@ export async function generateMetadata({ params }) {
         title: `${settings?.title} - ${main?.service?.title}`,
         description: desc,
         keywords: generatedKeywords,
-        url: `${baseUrl}/${params?.code}/xidmetler/${params?.id}/${params?.slug}`,
+        url: `${baseUrl}/${code}/xidmetler/${id}/${slug}`,
         siteName: `${process.env.NEXT_PUBLIC_SITEREAL_NAME}`,
         type: "website",
         image: logoUrl,
@@ -66,7 +64,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const { main, trans, settings, dataFull, menu1 } = await getData(params);
+  const { code, id, slug } = await params;
+  const { main, trans, settings, dataFull, menu1 } = await getData(
+    code,
+    id,
+    slug
+  );
   return (
     <>
       <Header

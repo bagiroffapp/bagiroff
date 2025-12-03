@@ -7,17 +7,18 @@ import Footer from "@/app/(components)/Layout/Footer";
 import Header from "@/app/(components)/Layout/Header";
 import HomePage from "@/app/(components)/Pages/Home/HomePage";
 
-const getData = async (params) => {
-  const main = await getAPIData(params?.code, "main_page");
-  const settings = await getAPIData(params?.code, "settings");
+const getData = async (code) => {
+  const main = await getAPIData(code, "main_page");
+  const settings = await getAPIData(code, "settings");
   const home_sections = await getAPIData2("home_sections");
-  const menu = await getAPIData(params?.code, "menu");
-  const trans = await getTrData(params?.code);
+  const menu = await getAPIData(code, "menu");
+  const trans = await getTrData(code);
   return { main, trans, settings, menu, home_sections };
 };
 
 export async function generateMetadata({ params }) {
   try {
+    const { code } = await params;
     const { settings } = await getData(params);
     const baseUrl = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
     const pictureBaseUrl = process.env.NEXT_PUBLIC_PICTURE;
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }) {
         title: `${settings?.title} - ${settings?.home_page}`,
         description: settings?.description,
         keywords: settings?.keywords,
-        url: `${baseUrl}/${params?.code}`,
+        url: `${baseUrl}/${code}`,
         siteName: `${process.env.NEXT_PUBLIC_SITEREAL_NAME}`,
         type: "website",
         image: logoUrl,
@@ -62,16 +63,17 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const { main, trans, settings, menu, home_sections } = await getData(params);
+  const { code } = await params;
+  const { main, trans, settings, menu, home_sections } = await getData(code);
   return (
     <>
-      <Header params={params?.code} menu={menu?.menus} netice={trans?.netice} />
+      <Header params={code} menu={menu?.menus} netice={trans?.netice} />
 
       <HomePage
         home_sections={home_sections}
         slider_data={main?.slider}
         readMore={trans?.more}
-        params={params?.code}
+        params={code}
         contact_us_text1={trans?.contact_page_form_title}
         contact_us_text2={trans?.contact_page_description}
         form_send_message={trans?.form_success}
@@ -108,7 +110,7 @@ export default async function page({ params }) {
         process_label4={main?.process?.label8}
       />
       <Footer
-        params={params?.code}
+        params={code}
         footer_text={trans?.footer_text}
         facebook={settings?.facebook}
         instagram={settings?.instagram}

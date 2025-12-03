@@ -4,17 +4,18 @@ import Header from "@/app/(components)/Layout/Header";
 import About from "@/app/(components)/Pages/About/About";
 import { generateKeywordsFromWords } from "@/app/(components)/Shared/toSlug";
 
-const getData = async (params) => {
-  const main = await getAPIData(params?.code, "haqqimizda_page");
-  const settings = await getAPIData(params?.code, "settings");
-  const trans = await getTrData(params?.code);
-  const menu1 = await getAPIData(params?.code, "menu");
+const getData = async (code) => {
+  const main = await getAPIData(code, "haqqimizda_page");
+  const settings = await getAPIData(code, "settings");
+  const trans = await getTrData(code);
+  const menu1 = await getAPIData(code, "menu");
   return { main, trans, settings, menu1 };
 };
 
 export async function generateMetadata({ params }) {
   try {
-    const { settings, trans, main } = await getData(params);
+    const { code } = await params;
+    const { settings, trans, main } = await getData(code);
     const baseUrl = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
     const pictureBaseUrl = process.env.NEXT_PUBLIC_PICTURE;
     const logoUrl = `${pictureBaseUrl}/${main?.about?.image}`;
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }) {
         title: `${settings?.title} - ${settings?.about_page}`,
         description: settings?.description,
         keywords: generatedKeywords,
-        url: `${baseUrl}/${params?.code}/haqqimizda`,
+        url: `${baseUrl}/${code}/haqqimizda`,
         siteName: `${process.env.NEXT_PUBLIC_SITEREAL_NAME}`,
         type: "website",
         image: logoUrl,
@@ -58,14 +59,11 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const { main, trans, settings, menu1 } = await getData(params);
+  const { code } = await params;
+  const { main, trans, settings, menu1 } = await getData(code);
   return (
     <>
-      <Header
-        params={params?.code}
-        menu={menu1?.menus}
-        netice={trans?.netice}
-      />
+      <Header params={code} menu={menu1?.menus} netice={trans?.netice} />
       <About
         text1={main?.about?.title}
         picture={`${process.env.NEXT_PUBLIC_PICTURE}/${main?.about?.image}`}
@@ -85,7 +83,7 @@ export default async function page({ params }) {
         corparatives={main?.corparatives}
       />
       <Footer
-        params={params?.code}
+        params={code}
         footer_text={trans?.footer_text}
         facebook={settings?.facebook}
         instagram={settings?.instagram}

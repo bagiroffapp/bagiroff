@@ -4,16 +4,17 @@ import Header from "@/app/(components)/Layout/Header";
 import Contact from "@/app/(components)/Pages/Contact/Contact";
 import { generateKeywordsFromWords } from "@/app/(components)/Shared/toSlug";
 
-const getData = async (params) => {
-  const dataFull = await getAPIData(params?.code, "contact_page");
-  const trans = await getTrData(params?.code);
-  const menu1 = await getAPIData(params?.code, "menu");
+const getData = async (code) => {
+  const dataFull = await getAPIData(code, "contact_page");
+  const trans = await getTrData(code);
+  const menu1 = await getAPIData(code, "menu");
   return { trans, dataFull, menu1 };
 };
 
 export async function generateMetadata({ params }) {
   try {
-    const { trans, dataFull } = await getData(params);
+    const { code } = await params;
+    const { trans, dataFull } = await getData(code);
     const baseUrl = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
     const pictureBaseUrl = process.env.NEXT_PUBLIC_PICTURE;
     const logoUrl = `${pictureBaseUrl}/${dataFull?.settings?.logo}`;
@@ -34,7 +35,7 @@ export async function generateMetadata({ params }) {
         title: `${dataFull?.settings?.title} - ${trans?.contact_title}`,
         description: trans?.contact_page_description,
         keywords: generatedKeywords,
-        url: `${baseUrl}/${params?.code}/elaqe`,
+        url: `${baseUrl}/${code}/elaqe`,
         siteName: `${process.env.NEXT_PUBLIC_SITEREAL_NAME}`,
         type: "website",
         image: logoUrl,
@@ -59,16 +60,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const { dataFull, trans, menu1 } = await getData(params);
+  const { code } = await params;
+  const { dataFull, trans, menu1 } = await getData(code);
   return (
     <>
-      <Header
-        params={params?.code}
-        menu={menu1?.menus}
-        netice={trans?.netice}
-      />
+      <Header params={code} menu={menu1?.menus} netice={trans?.netice} />
       <Contact
-        params={params?.code}
+        params={code}
         contact_title={trans?.contact_title}
         contact_page_description={trans?.contact_page_description}
         contact_us_text1={trans?.contact_page_form_title}
@@ -89,7 +87,7 @@ export default async function page({ params }) {
         form_sending={trans?.form_sending}
       />
       <Footer
-        params={params?.code}
+        params={code}
         footer_text={trans?.footer_text}
         facebook={dataFull?.settings?.facebook}
         instagram={dataFull?.settings?.instagram}
