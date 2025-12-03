@@ -8,24 +8,24 @@ const nextConfig = {
             pathname: '/storage/**',
         }, ],
     },
-    async redirects() {
-        return [{
-                source: '/:lang(az[^/?]+)/:path*',
-                destination: '/az/:path*',
-                permanent: true,
-            },
-            {
-                source: '/:lang(en[^/?]+)/:path*',
-                destination: '/en/:path*',
-                permanent: true,
-            },
-            {
-                source: '/',
-                destination: '/az',
-                permanent: true,
-            },
-        ];
-    },
+    // async redirects() {
+    //     return [{
+    //             source: '/:lang(az[^/?]+)/:path*',
+    //             destination: '/az/:path*',
+    //             permanent: true,
+    //         },
+    //         {
+    //             source: '/:lang(en[^/?]+)/:path*',
+    //             destination: '/en/:path*',
+    //             permanent: true,
+    //         },
+    //         {
+    //             source: '/',
+    //             destination: '/az',
+    //             permanent: true,
+    //         },
+    //     ];
+    // },
     reactStrictMode: false,
 };
 

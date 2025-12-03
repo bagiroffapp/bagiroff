@@ -20,7 +20,7 @@ const Header = ({ params, menu, netice }) => {
   const overlayDiv = useRef();
   const mobileRef = useRef();
   const searchRef = useRef();
-
+  const currentLang = params;
   useEffect(() => {
     const scrollHandler = () => {
       if (typeof window !== "undefined") {
@@ -142,8 +142,8 @@ const Header = ({ params, menu, netice }) => {
         <MaxWidth>
           <Grid gridClass="flex items-center justify-between">
             <GridSpan gridSpan="col-span-2 ">
-              <Link href={`/${params}`}>
-                <Image
+              <Link href={currentLang === "az" ? "/" : `/${currentLang}`}>
+                <img
                   alt="logo"
                   src={"/logo.svg"}
                   width={204}
@@ -155,15 +155,21 @@ const Header = ({ params, menu, netice }) => {
             <GridSpan gridSpan={`col-span-8 lg:hidden`}>
               <ul className="flex gap-[32px] items-center justify-center h-full">
                 {menu?.map((item, i) => {
+                  const urlPrefix =
+                    currentLang === "az" ? "" : `/${currentLang}`;
+                  const fullUrl = `${urlPrefix}${item?.slug_url}`;
+
+                  // Active sayfa kontrolü (küçük bir düzeltme gerekebilir)
                   const isHomePage = item?.slug_url === `/`;
-                  const isActive = isHomePage
-                    ? activePage === `${item?.slug_url}`
-                    : activePage.startsWith(`/${params}${item?.slug_url}`);
+                  // Active kontrolünde activePage artık '/az' içermeyebilir, bunu hesaba katalım
+                  const isActive =
+                    activePage === fullUrl ||
+                    (activePage === "/" && fullUrl === "");
 
                   return (
                     <li key={item?.id || i}>
                       <Link
-                        href={`/${params}${item?.slug_url}`}
+                        href={fullUrl}
                         className={`text-[16px] transition-all duration-300 hover:text-[--blue] hover:font-['Lota-Bold'] ${
                           isActive ? "font-['Lota-Bold'] text-[--blue]" : ""
                         }`}

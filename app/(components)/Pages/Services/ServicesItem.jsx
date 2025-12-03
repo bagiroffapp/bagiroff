@@ -11,6 +11,8 @@ import ConsultingIteGrid from "../Home/ConsultingIteGrid";
 import TextwithButton from "../../Shared/TextwithButton/TextwithButton";
 import SahredSerices from "../../Shared/SahredSerices/SahredSerices";
 import Link from "next/link";
+import { getAPIData } from "../../getData/getAPIData";
+import { use } from "react";
 
 const ServicesItem = ({
   params_slug,
@@ -40,6 +42,7 @@ const ServicesItem = ({
   const currentService = dataFull?.find(
     (service) => service.slug === currentSlug
   );
+
   const currentServiceId = currentService ? currentService.id : null;
 
   return (
