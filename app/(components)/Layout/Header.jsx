@@ -99,12 +99,20 @@ const Header = ({ params, menu, netice }) => {
     if (searchInput && searchInput.trim() !== "") {
       setLoading(true);
       const delay = setTimeout(() => {
-        fetch(
-          `${process.env.NEXT_PUBLIC_MAIN_URL}/${params}/search?q=${toLowerCase}`
-        )
-          .then((res) => res.json())
+        // BURASI DEĞİŞTİ:
+        // Doğrudan API URL'i yerine, next.config.mjs'de tanımladığımız proxy yolunu kullanıyoruz.
+        // '/backend-api' bizim tanımladığımız proxy anahtarıdır.
+        fetch(`/backend-api/${params}/search?q=${toLowerCase}`)
+          .then((res) => {
+            if (!res.ok) throw new Error("API hatası");
+            return res.json();
+          })
           .then((data) => {
             setXidmetler(data?.xidmetler);
+          })
+          .catch((err) => {
+            console.error("Search fetch error:", err);
+            setXidmetler([]); // Hata durumunda boşalt
           })
           .finally(() => setLoading(false));
       }, 1000);
@@ -112,10 +120,9 @@ const Header = ({ params, menu, netice }) => {
       return () => clearTimeout(delay);
     } else {
       setLoading(false);
-
       setXidmetler([]);
     }
-  }, [searchInput]);
+  }, [searchInput, params]); // params eklendi
 
   function closeSearch() {
     const serach = searchRef?.current?.classList;

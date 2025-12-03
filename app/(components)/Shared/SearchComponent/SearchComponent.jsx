@@ -1,6 +1,8 @@
 import Link from "next/link";
-import MaxWidth from "../MaxWidth/MaxWidth";
+
 import { IoCloseOutline } from "react-icons/io5";
+
+import MaxWidth from "../MaxWidth/MaxWidth";
 import SearchSpinner from "../SearchSpinner/SearchSpinner";
 
 const SearchComponent = ({
@@ -26,39 +28,50 @@ const SearchComponent = ({
             <input
               type="text"
               ref={searchInputRef}
-              // onKeyUp={(e) => onCodeClose(e)}
               onChange={(e) =>
                 setSearchInput(e.target.value.toLocaleLowerCase())
               }
+              placeholder="Axtar..."
               className="text-black w-full text-[17px] outline-none px-[20px] py-[20px] rounded-xl"
             />
           </div>
           <div className=" w-full mt-[30px]  ">
             {loading && <SearchSpinner />}
+
+            {/* Eğer yüklenmiyorsa, sonuç yoksa ve input boş değilse hata mesajı göster */}
             {!loading && notFound && inputValue?.trim() !== "" && (
               <p className="text-[--blue41] w-full text-[16px] flex items-center justify-center bg-[#fff] px-[20px] py-[10px] rounded-[6px]  font-semibold">
-                {netice}
+                {netice || "Axtarışa uyğun nəticə tapılmadı"}
               </p>
             )}
+
             <ul className="flex flex-col gap-[20px]">
-              {xidmetler?.results?.map((cur, i) => (
-                <li
-                  key={cur?.id || i}
-                  className="flex items-center gap-[20px] bg-[#fff] rounded-[20px]  px-[20px] py-[10px] "
-                >
-                  <Link
-                    href={`/${params}/xidmetler/${cur?.id}/${cur?.slug}`}
-                    className="w-full flex h-full items-center gap-[20px]"
+              {xidmetler?.results?.map((cur, i) => {
+                // URL DÜZELTME MANTIĞI:
+                // Eğer params 'az' ise prefix koyma, değilse '/en' vb. koy.
+                const urlPrefix = params === "az" ? "" : `/${params}`;
+                const fullUrl = `${urlPrefix}/xidmetler/${cur?.id}/${cur?.slug}`;
+
+                return (
+                  <li
+                    key={cur?.id || i}
+                    className="flex items-center gap-[20px] bg-[#fff] rounded-[20px]  px-[20px] py-[10px] "
                   >
-                    <h3 className="text-[16px] bg-[#f4f6f6] rounded-[5px] px-[10px] py-[5px]">
-                      {xidmetler?.page_title}
-                    </h3>
-                    <h4 className="text-[16px] text-[--blue41]">
-                      {cur?.title}
-                    </h4>
-                  </Link>
-                </li>
-              ))}
+                    <Link
+                      href={fullUrl}
+                      onClick={close} // Sonuca tıklayınca arama kapansın
+                      className="w-full flex h-full items-center gap-[20px]"
+                    >
+                      <h3 className="text-[16px] bg-[#f4f6f6] rounded-[5px] px-[10px] py-[5px]">
+                        {xidmetler?.page_title}
+                      </h3>
+                      <h4 className="text-[16px] text-[--blue41]">
+                        {cur?.title}
+                      </h4>
+                    </Link>
+                  </li>
+                );
+              })}
             </ul>
           </div>
         </MaxWidth>

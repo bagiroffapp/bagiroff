@@ -16,17 +16,33 @@ const MobileMenu = ({
       >
         <ul className="flex flex-col gap-[20px] ">
           {data?.map((cur, i) => {
-            const isHomePage = cur?.slug_url === `/${params}`;
+            // 1. URL Oluşturma Mantığı:
+            // Eğer dil 'az' ise prefix boş string ("") olsun.
+            // Eğer dil 'en' ise prefix "/en" olsun.
+            const urlPrefix = params === "az" ? "" : `/${params}`;
+
+            // Tam URL'yi oluşturuyoruz (Örn: /hizmetler veya /en/hizmetler)
+            const fullUrl = `${urlPrefix}${cur?.slug_url}`;
+
+            // 2. Active Class Kontrolü:
+            // activePage tarayıcıdaki şu anki URL'dir (Örn: /hizmetler).
+            // Anasayfa ('/') için tam eşleşme kontrolü yapıyoruz.
+            // Diğer sayfalar için startsWith kullanıyoruz.
+            const isHomePage = cur?.slug_url === "/";
             const isActive = isHomePage
-              ? activePage === cur?.slug_url
-              : activePage.startsWith(cur?.slug_url);
+              ? activePage === fullUrl ||
+                (params !== "az" && activePage === `/${params}`)
+              : activePage.startsWith(fullUrl);
+
             return (
               <li key={cur?.id || i} className="w-full ">
                 <Link
+                  // Linke tıklandığında menüyü kapatması için onClick ekledim
+                  onClick={closeMobileMenu}
                   className={`flex text-[20px] capitalize  justify-center w-full  gap-2 cursor-pointer trans hover:text-[#003B71] ${
                     isActive ? "font-['Lota-Bold'] text-[--blue]" : ""
                   }`}
-                  href={`/${params}${cur?.slug_url}`}
+                  href={fullUrl}
                 >
                   {cur?.name}
                 </Link>

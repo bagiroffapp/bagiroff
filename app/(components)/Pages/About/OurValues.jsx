@@ -90,8 +90,6 @@ const OurValues = ({ cards }) => {
               width={1000}
               height={400}
               alt={card?.title || "Our company values"}
-              objectFit="cover"
-              priority={index === 0}
               className="h-[450px] lg:h-[250px] lg:static w-[500px] object-cover"
             />
           </div>
