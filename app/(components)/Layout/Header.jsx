@@ -102,7 +102,7 @@ const Header = ({ params, menu, netice }) => {
         // BURASI DEĞİŞTİ:
         // Doğrudan API URL'i yerine, next.config.mjs'de tanımladığımız proxy yolunu kullanıyoruz.
         // '/backend-api' bizim tanımladığımız proxy anahtarıdır.
-        fetch(`/backend-api/${params}/search?q=${toLowerCase}`)
+        fetch(`https://api.baghiroff.az/api/${params}/search?q=${toLowerCase}`)
           .then((res) => {
             if (!res.ok) throw new Error("API hatası");
             return res.json();
