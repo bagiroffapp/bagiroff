@@ -19,7 +19,7 @@ const getData = async (code, id, slug) => {
 export async function generateMetadata({ params }) {
   try {
     const { code, id, slug } = await params;
-    const { settings, main } = await getData(params);
+    const { settings, main } = await getData(code, id, slug);
     const baseUrl = `${process.env.NEXT_PUBLIC_SITE_NAME}`;
     const pictureBaseUrl = process.env.NEXT_PUBLIC_PICTURE;
     const logoUrl = `${main?.service?.image}`;
@@ -72,14 +72,10 @@ export default async function page({ params }) {
   );
   return (
     <>
-      <Header
-        params={params?.code}
-        menu={menu1?.menus}
-        netice={trans?.netice}
-      />
+      <Header params={code} menu={menu1?.menus} netice={trans?.netice} />
       <ServicesItem
-        params_code={params?.code}
-        params_slug={params?.slug}
+        params_code={code}
+        params_slug={slug}
         dataFull={dataFull?.services}
         data={main?.service}
         other_servicves={main?.related}
@@ -106,7 +102,7 @@ export default async function page({ params }) {
         }
       />
       <Footer
-        params={params?.code}
+        params={code}
         footer_text={trans?.footer_text}
         facebook={settings?.facebook}
         instagram={settings?.instagram}
