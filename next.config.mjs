@@ -8,12 +8,12 @@ const nextConfig = {
             pathname: '/storage/**',
         }, ],
     },
-    async rewrites() {
-        return [{
-            source: '/backend-api/:path*', // Frontend'de kullanacağımız yol
-            destination: 'https://api.baghiroff.az/api/:path*', // Gerçek API adresi
-        }, ]
-    },
+    // async rewrites() {
+    //     return [{
+    //         source: '/backend-api/:path*', // Frontend'de kullanacağımız yol
+    //         destination: 'https://api.baghiroff.az/api/:path*', // Gerçek API adresi
+    //     }, ]
+    // },
     // async redirects() {
     //     return [{
     //             source: '/:lang(az[^/?]+)/:path*',
